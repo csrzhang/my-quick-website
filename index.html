@@ -3,55 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Quick Vercel Website</title>
+    <title>My Personal Portfolio - Vercel Quick Deploy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-light: #f8f9fa;
+            --text-dark: #343a40;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f0f8ff; /* Light blue background */
-            color: #2c3e50; /* Dark text */
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
             text-align: center;
         }
+
+        /* Main content container */
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
         }
-        h1 {
-            color: #0070f3;
+
+        /* Header Welcome Section */
+        .header-section {
+            background: linear-gradient(135deg, #e0f7fa, #ffffff);
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .header-section h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
             margin-bottom: 10px;
         }
-        p {
-            line-height: 1.6;
+        .header-section p {
+            color: var(--secondary-color);
             font-size: 1.1em;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 30px;
+
+        /* Modular Content Section */
+        .content-section {
+            background-color: white;
+            padding: 30px;
             border-radius: 8px;
-            border: 3px solid #0070f3;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        .content-section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--background-light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Link List */
+        .link-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .link-list li {
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .link-list li:hover {
+            background-color: #ddd;
+        }
+        .link-list a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
         .footer {
-            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #dee2e6;
+            color: var(--secondary-color);
             font-size: 0.9em;
-            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#about">About Me</a>
+            <a href="#projects">Projects</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>Welcome to My Vercel Deployment!</h1>
-        <p>This is a simple static website example, deployed in minutes using Vercel.</p>
-        <p>Vercel automatically detects pure HTML/CSS and deploys it effortlessly.</p>
-        
-        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Code on computer screen">
-        
-        <p class="footer">Next step: Customize this code and keep pushing to Git!</p>
+
+        <header class="header-section">
+            <h1>Welcome to [Your Name]'s Personal Portfolio</h1>
+            <p>A static personal homepage quickly deployed using Vercel. Thanks for visiting!</p>
+        </header>
+
+        <section id="about" class="content-section">
+            <h2>🌍 About Me</h2>
+            <p>I am an enthusiast in [Your Field, e.g., Web Development/Data Science/UI/UX]. My goal is to use technology to create valuable products and solutions. This website serves as my digital business card and playground.</p>
+            <p>Currently, I am focusing on technologies like [Next.js/Python/Cloud Computing].</p>
+        </section>
+
+        <section id="projects" class="content-section">
+            <h2>🔨 Projects & Essential Links</h2>
+            <ul class="link-list">
+                <li><a href="https://github.com/YourUsername" target="_blank">GitHub Profile (My Code Repository)</a></li>
+                <li><a href="https://medium.com/@YourHandle" target="_blank">A Recommended Article (Medium/Substack)</a></li>
+                <li><a href="https://linkedin.com/in/YourProfile" target="_blank">LinkedIn Profile (My Professional Network)</a></li>
+                <li><a href="#contact">Get in Touch Now</a></li>
+            </ul>
+        </section>
+
+        <section id="blog" class="content-section">
+            <h2>✍️ My Latest Blog Posts</h2>
+            <p>Here are summaries of my recent articles. You can replace these placeholder links with actual blog posts later.</p>
+            <ul>
+                <li><a href="#">[Placeholder] The Best Practices for Deploying Next.js on Vercel</a> - 2025.11.01</li>
+                <li><a href="#">[Placeholder] 5 Must-Know Libraries for Python Beginners</a> - 2025.10.20</li>
+                <li><a href="#">[Placeholder] Why Static Site Generators Are the Future of Content</a> - 2025.09.15</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>✉️ Contact Me</h2>
+            <p>Feel free to reach out via the following channels:</p>
+            <p><strong>Email:</strong> your.email@example.com</p>
+            <p><strong>Twitter/X:</strong> @YourHandle</p>
+        </section>
+
     </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 [Your Name]. All rights reserved. | Deployed with ❤️ via Vercel.</p>
+    </footer>
+
 </body>
 </html>
