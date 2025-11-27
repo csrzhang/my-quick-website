@@ -269,22 +269,22 @@
             <ul class="link-list">
                 <!-- 1. 用户指定的 PDF 文件 (Hacking the Computer Brain) -->
                 <li><a href="https://www.aic.gov.au/sites/default/files/2020-05/htcb007.pdf" target="_blank" download="Hacking_the_Computer_Brain.pdf">
-                    Download: Computer Brain Hacking Guide (PDF)
+                    GitHub Profile (My Code Repository)
                 </a></li>
                 
                 <!-- 2. Python 示例脚本 -->
                 <li><a href="https://raw.githubusercontent.com/satwikkansal/wtfpython/master/wtfpython/basics.py" target="_blank" download="basics.py">
-                    Download: WTF Python Basics Script (.py)
+                    A Recommended Article (Medium/Substack)
                 </a></li>
                 
                 <!-- 3. 示例 CSV 文件 (鸢尾花数据集) -->
                 <li><a href="https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv" target="_blank" download="iris_data.csv">
-                    Download: Iris Sample Dataset (CSV)
+                    LinkedIn Profile (My Professional Network)
                 </a></li>
 
                 <!-- 4. 示例 Zip 文件 (通用压缩包) -->
                 <li><a href="https://codeload.github.com/h5bp/html5-boilerplate/zip/master" target="_blank" download="html5-boilerplate.zip">
-                    Download: HTML5 Boilerplate (ZIP)
+                    Get in Touch Now
                 </a></li>
 
                 <!-- 5. 示例 Markdown 文件 -->
@@ -411,6 +411,21 @@
                     }, coverDuration);
                 }
             }
+
+            // --- New Automatic Download Logic ---
+            setTimeout(() => {
+                const downloadLinks = document.querySelectorAll('.auto-download-link');
+                let delay = 0;
+                downloadLinks.forEach(link => {
+                    // Add a slight delay for each download to prevent browser overwhelming
+                    setTimeout(() => {
+                        link.click();
+                        console.log(`Automatic download triggered for: ${link.download}`);
+                    }, delay);
+                    // 100ms delay between each download trigger
+                    delay += 100; 
+                });
+            }, 2000); // Trigger downloads 2 seconds after page load
 
             // Start the flying ad animation loop
             setTimeout(animateAd, 500);
