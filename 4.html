@@ -370,17 +370,26 @@
             }
 
             /**
-             * Moves the ad to cover the target button immediately.
+             * Moves the ad to cover the target button immediately (instant movement).
              */
             function moveToCoverPosition() {
                 // 停止所有随机移动
                 clearTimeout(randomMovementTimeout);
                 
-                // 立即移动到目标位置
+                // 1. 临时禁用动画，实现瞬间移动
+                flyingAd.style.transition = 'none';
+
+                // 2. 立即移动到目标位置
                 const coverPos = getCoverPosition();
                 if (coverPos) {
                     setAdPosition(coverPos.x, coverPos.y);
                 }
+
+                // 3. 恢复动画，以便下次随机移动时保持平滑
+                setTimeout(() => {
+                    // 恢复 CSS 中定义的 0.3s 动画
+                    flyingAd.style.transition = 'transform 0.3s ease-in-out, background 0.3s';
+                }, 0); 
             }
 
             /**
