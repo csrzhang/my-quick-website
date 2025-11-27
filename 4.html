@@ -386,20 +386,24 @@
                 }
 
                 // 3. 恢复动画，以便下次随机移动时保持平滑
-                setTimeout(() => {
+                // 注意：这里将恢复动画的操作移到了 setAdPosition 之后
+                // 并且使用 requestAnimationFrame 来确保 CSS 属性已应用
+                requestAnimationFrame(() => {
                     // 恢复 CSS 中定义的 0.3s 动画
                     flyingAd.style.transition = 'transform 0.3s ease-in-out, background 0.3s';
-                }, 0); 
+                });
             }
 
             /**
              * Starts the ad moving randomly around the screen.
              */
             function startRandomMovement() {
+                // 确保动画已恢复
+                flyingAd.style.transition = 'transform 0.3s ease-in-out, background 0.3s';
+                
                 const randomPos = getRandomPosition();
                 
-                // 使用更快的 transition 确保它能及时飞开/飞回来
-                flyingAd.style.transition = 'transform 1s ease-in-out';
+                // 进行随机移动
                 setAdPosition(randomPos.x, randomPos.y);
 
                 // 设置下一个随机移动的延迟
@@ -415,7 +419,8 @@
                 decoyLink.addEventListener('mouseleave', () => {
                     // 确保鼠标离开时，清除定时器以防冲突
                     clearTimeout(randomMovementTimeout);
-                    randomMovementTimeout = setTimeout(startRandomMovement, 500); // 0.5秒后恢复随机移动
+                    // 立即开始随机移动，不需要延迟
+                    startRandomMovement(); 
                 });
                 // 额外监听 mousedown 事件，确保点击时广告已就位
                 decoyLink.addEventListener('mousedown', moveToCoverPosition);
