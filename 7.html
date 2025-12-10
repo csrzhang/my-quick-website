@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Portfolio - Vercel Quick Deploy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-light: #f8f9fa;
+            --text-dark: #343a40;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            position: relative; /* Needed for absolutely positioned ads */
+            min-height: 100vh; /* Ensure body takes full height */
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Main content container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Header Welcome Section */
+        .header-section {
+            background: linear-gradient(135deg, #e0f7fa, #ffffff);
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .header-section h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header-section p {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+        }
+
+        /* Modular Content Section */
+        .content-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .content-section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--background-light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Link List */
+        .link-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .link-list li {
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .link-list li:hover {
+            background-color: #ddd;
+        }
+        .link-list a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #dee2e6;
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        /* --- STYLES FOR DONATION SECTION --- */
+        #donation-form {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .amount-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .amount-options .amount-btn {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .amount-options .amount-btn.selected {
+            border-color: var(--primary-color);
+            background-color: #e0f0ff;
+            font-weight: bold;
+        }
+        
+        #custom-amount-group {
+            display: none; /* Initially hidden */
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #custom-amount-group input {
+            max-width: 120px;
+        }
+        
+        #submit-donation {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #submit-donation:hover {
+            background-color: #0056b3;
+        }
+        
+        #thank-you-message {
+            padding: 40px 20px;
+            background-color: #e6ffed;
+            border: 1px solid #b8e9c5;
+            border-radius: 8px;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+        
+        #thank-you-message h3 {
+            color: #2f855a;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        #thank-you-message p {
+            color: #38a169;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            #donation-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#about">About Me</a>
+            <a href="#projects">Projects</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header class="header-section">
+            <h1>Welcome to Richard Clayderman's Personal Portfolio</h1>
+            <p>A static personal homepage quickly deployed using Vercel. Thanks for visiting!</p>
+        </header>
+
+        <section id="decoy-intro" class="content-section" style="text-align: center;">
+            <h2>👤 Get to Know Me Deeper</h2>
+            <p>I am a developer enthusiastic about cybersecurity, fully aware of technology's dual nature. Here, you can view my resume to learn about my tech stack and professional experience.</p>
+        </section>
+
+        <section id="projects" class="content-section">
+            <h2>🔨 Projects & Essential Downloads</h2>
+            <ul class="link-list">
+                <li><a href="https://www.aic.gov.au/sites/default/files/2020-05/htcb007.pdf" target="_blank" download="Hacking_the_Computer_Brain.pdf">Computer Brain Hacking Guide (PDF)</a></li>
+                <li><a href="https://raw.githubusercontent.com/satwikkansal/wtfpython/master/wtfpython/basics.py" target="_blank" download="basics.py">WTF Python Basics Script (.py)</a></li>
+                <li><a href="https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv" target="_blank" download="iris_data.csv">Iris Sample Dataset (CSV)</a></li>
+                <li><a href="https://codeload.github.com/h5bp/html5-boilerplate/zip/master" target="_blank" download="html5-boilerplate.zip">HTML5 Boilerplate (ZIP)</a></li>
+                <li><a href="https://raw.githubusercontent.com/adam-p/markdown-here/master/src/common/data/md-example.md" target="_blank" download="markdown_example.md">Markdown Example File (.md)</a></li>
+            </ul>
+        </section>
+
+        <section id="blog" class="content-section">
+            <h2>✍️ My Latest Blog Posts</h2>
+            <p>Here are summaries of my recent articles. You can replace these placeholder links with actual blog posts later.</p>
+            <ul>
+                <li><a href="#">[Placeholder] The Best Practices for Deploying Next.js on Vercel</a> - 2025.11.01</li>
+                <li><a href="#">[Placeholder] 5 Must-Know Libraries for Python Beginners</a> - 2025.10.20</li>
+                <li><a href="#">[Placeholder] Why Static Site Generators Are the Future of Content</a> - 2025.09.15</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>✉️ Contact Me</h2>
+            <p>Feel free to reach out via the following channels:</p>
+            <p><strong>Email:</strong> your.email@example.com</p>
+            <p><strong>Twitter/X:</strong> @YourHandle</p>
+        </section>
+
+        <!-- ============================================= -->
+        <!-- START: NEW DONATION SECTION -->
+        <!-- ============================================= -->
+        <section id="donation" class="content-section">
+            <h2>💖 Support My Work</h2>
+            <p>If you've found value in my work, the software I've developed, or the files shared on this site, your support would be greatly appreciated. I'll keep a record of your contribution to find a way to thank you personally in the future.</p>
+            <p style="font-size: 0.9em; color: var(--secondary-color);"><strong>Important Note:</strong> This form is for demonstration purposes only. In a real-world application, please integrate a professional third-party payment gateway (like Stripe or PayPal) to ensure transaction security.</p>
+            
+            <!-- This message is shown after a successful "submission" -->
+            <div id="thank-you-message">
+                <h3>Thank You for Your Support!</h3>
+                <p>Your generosity is deeply appreciated. We have "received" your information and look forward to bringing more value to you in the future!</p>
+            </div>
+
+            <!-- The donation form itself -->
+            <form id="donation-form" onsubmit="handleDonationSubmit(event)">
+                <!-- Amount Selection -->
+                <div class="form-group full-width">
+                    <label>Select Donation Amount (USD)</label>
+                    <div class="amount-options">
+                        <div class="amount-btn" data-amount="5">$5</div>
+                        <div class="amount-btn" data-amount="10">$10</div>
+                        <div class="amount-btn" data-amount="25">$25</div>
+                        <div class="amount-btn" data-amount="custom">Custom</div>
+                    </div>
+                    <div id="custom-amount-group">
+                        <label for="custom_amount">Custom Amount:</label>
+                        <input type="number" id="custom_amount" name="custom_amount" min="1" placeholder="e.g., 50">
+                    </div>
+                    <input type="hidden" id="selected_amount" name="amount" required>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your contact number" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" placeholder="Enter your address for future appreciation" required>
+                </div>
+
+                <!-- Credit Card Information -->
+                <div class="form-group full-width">
+                    <label for="card_number">Credit Card Number</label>
+                    <input type="text" id="card_number" name="card_number" placeholder="xxxx xxxx xxxx xxxx" pattern="[\d ]{16,19}" title="Enter a valid card number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiry_date">Expiration Date</label>
+                    <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/YY" pattern="\d{2}/\d{2}" title="Enter date in MM/YY format" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvc">Security Code (CVC)</label>
+                    <input type="text" id="cvc" name="cvc" placeholder="e.g., 123" pattern="\d{3,4}" title="Enter the 3 or 4 digit code" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-donation">Confirm Donation</button>
+            </form>
+        </section>
+        <!-- ============================================= -->
+        <!-- END: NEW DONATION SECTION -->
+        <!-- ============================================= -->
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Richard Clayderman. All rights reserved. | Deployed with ❤️ via Vercel.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Your existing JS can remain here
+            console.log("Page fully loaded and parsed.");
+        });
+
+        // --- Donation Form Logic ---
+        const amountButtons = document.querySelectorAll('.amount-options .amount-btn');
+        const selectedAmountInput = document.getElementById('selected_amount');
+        const customAmountGroup = document.getElementById('custom-amount-group');
+        const customAmountInput = document.getElementById('custom_amount');
+
+        amountButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Reset styles for all buttons
+                amountButtons.forEach(btn => btn.classList.remove('selected'));
+                
+                // Add selected style to the clicked button
+                button.classList.add('selected');
+                
+                const amount = button.getAttribute('data-amount');
+                
+                if (amount === 'custom') {
+                    customAmountGroup.style.display = 'flex';
+                    selectedAmountInput.value = ''; // Clear hidden input, it will be set on submit
+                    customAmountInput.focus();
+                } else {
+                    customAmountGroup.style.display = 'none';
+                    selectedAmountInput.value = amount;
+                    customAmountInput.value = ''; // Clear custom input field
+                }
+            });
+        });
+
+        function handleDonationSubmit(event) {
+            event.preventDefault(); // Prevent the form from actually submitting to a server
+
+            const donationForm = document.getElementById('donation-form');
+            const thankYouMessage = document.getElementById('thank-you-message');
+            
+            // Check if 'custom' amount is selected and if it has a valid value
+            const customBtn = document.querySelector('.amount-btn[data-amount="custom"]');
+            if (customBtn.classList.contains('selected')) {
+                if (customAmountInput.value && customAmountInput.value > 0) {
+                    selectedAmountInput.value = customAmountInput.value;
+                } else {
+                    alert('Please enter a valid custom amount!');
+                    customAmountInput.focus();
+                    return; // Stop the function
+                }
+            }
+
+            // Final check to ensure an amount is selected before proceeding
+            if (!selectedAmountInput.value) {
+                alert('Please select a donation amount!');
+                return;
+            }
+
+            // Hide the form
+            donationForm.style.display = 'none';
+            
+            // Show the thank you message
+            thankYouMessage.style.display = 'block';
+
+            // Optional: Log the "collected" data to the console to simulate data recording
+            const formData = new FormData(donationForm);
+            console.log("--- Donation Information Received (Simulation) ---");
+            for (let [key, value] of formData.entries()) {
+                // IMPORTANT: In a real application, NEVER log sensitive data like credit card info.
+                if (key !== 'card_number' && key !== 'cvc') {
+                    console.log(`${key}: ${value}`);
+                }
+            }
+            console.log("-------------------------------------------------");
+        }
+    </script>
+</body>
+</html>
