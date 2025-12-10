@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>双界面叠加示例</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    /* 整个容器 */
+    .app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 界面 A：正常交互界面 */
+    .screen-main {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+      z-index: 1;
+    }
+    .screen-main h1 {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+    .screen-main p {
+      font-size: 18px;
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+    .screen-main button {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.9);
+      color: #4f46e5;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* 界面 B：待机 / 屏保界面（叠在上面） */
+    .screen-idle {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;  /* 默认不能点 */
+      transition: opacity 0.6s ease;
+    }
+
+    /* 进入 idle 状态时加这个类，让它淡入并接管点击 */
+    .screen-idle.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .screen-idle h2 {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .screen-idle p {
+      font-size: 18px;
+      opacity: 0.8;
+      margin-bottom: 24px;
+    }
+
+    .clock {
+      font-size: 56px;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- 界面 A：正常界面 -->
+    <div class="screen-main">
+      <h1>这是界面 A（交互界面）</h1>
+      <p>
+        移动鼠标、按键盘、点击或触摸屏幕，都会让界面保持激活状态。
+        如果一段时间没有操作，会自动切换到界面 B（待机 / 屏保界面）。
+      </p>
+      <button>随便点点也算“有操作”</button>
+    </div>
+
+    <!-- 界面 B：待机 / 屏保界面 -->
+    <div class="screen-idle" id="idleScreen">
+      <div class="clock" id="clock"></div>
+      <h2>待机中 · Idle Screen</h2>
+      <p>检测到一段时间没有操作，进入待机界面。<br>轻轻移动鼠标或按任意键即可返回。</p>
+    </div>
+  </div>
+
+  <script>
+    // ==== 配置：空闲多少毫秒后显示界面 B ====
+    const IDLE_TIMEOUT = 300;
+
+    const idleScreen = document.getElementById('idleScreen');
+    let idleTimer = null;
+
+    // 重置为“活跃状态” -> 显示 A，隐藏 B
+    function setActive() {
+      // 只要有操作，立即隐藏待机界面
+      if (idleScreen.classList.contains('active')) {
+        idleScreen.classList.remove('active');
+      }
+
+      // 重置计时器
+      if (idleTimer) {
+        clearTimeout(idleTimer);
+      }
+      idleTimer = setTimeout(() => {
+        // 超时：进入 idle 状态 -> 显示 B
+        idleScreen.classList.add('active');
+      }, IDLE_TIMEOUT);
+    }
+
+    // 监听各种输入事件
+    const events = [
+      'mousemove',
+      'mousedown',
+      'keydown',
+      'touchstart',
+      'click',
+      'wheel'
+    ];
+
+    events.forEach(eventName => {
+      window.addEventListener(eventName, setActive, { passive: true });
+    });
+
+    // 页面加载完后先设为活跃（启动计时器）
+    setActive();
+
+    // 可选：在待机界面显示一个实时时钟
+    function updateClock() {
+      const clockEl = document.getElementById('clock');
+      if (!clockEl) return;
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      clockEl.textContent = `${hh}:${mm}:${ss}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
